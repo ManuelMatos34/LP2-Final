@@ -1,0 +1,73 @@
+﻿@using ProyectoSC_AE.Controllers
+@model Usuario
+
+@{
+    ViewData["Title"] = "InicioSesion";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Iniciar Sesion</title>
+
+    <meta name="viewport" content="width=device-width" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="~/css/sweetalert2.min.css" asp-append-version="true" />
+
+
+</head>
+
+<body class="background-login">
+
+    @if (TempData["Titulo"] != null)
+    {
+            <script type="text/javascript">
+                    window.onload = function test() {
+                    Swal.fire({
+                           icon: '@TempData["Tipo"]',
+                           title: '@TempData["Titulo"]',
+                           text: '@TempData["Mensaje"]',
+                           confirmButtonColor: '#007e00'
+            });
+            };
+            </script>
+    }
+
+<a class="btn btn-danger btn-back p-2" style="color: black; font-size:20px" asp-controller="Home" asp-action="Index">Volver</a>
+
+<div class="login-form">
+    <form asp-controller="Login" asp-action="ValidarInicioUsuario" method="post">
+        <div class="form-group">
+        <img src="https://estudiantes.unphusist.unphu.edu.do/assets/img/unphusist-logo.svg"> 
+        </div>
+        <div class="p-1">
+            <input asp-for="Matricula" class="form-control" placeholder="Usuario" required="required">
+        </div>
+        <div class="p-1">
+            <input asp-for="Password" type="password" class="form-control" placeholder="Contraseña" required="required">
+        </div>
+        <div class="p-1 d-flex justify-content-center">
+        <a href="https://cp.unphu.edu.do/verificacion-email">¿Olvidaste tus datos?</a>
+        </div>
+        <div class="p-1">
+            <button type="submit" class="btn btn-success btn-block">Entrar</button>
+        </div>     
+    </form>
+</div>
+
+    <script src="~/js/sweetalert2.min.js" asp-append-version="true"></script>
+</body>
+
+</html>

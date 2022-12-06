@@ -1,0 +1,317 @@
+﻿@model PaginatedList<PosiblesCupo>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = null;
+
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Solicitud de Cupos(UNPHU)</title>
+
+    <meta name="viewport" content="width=device-width" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/sweetalert2.min.css" asp-append-version="true" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+
+<body>
+
+<header class="site-header">
+     <div class="site-identity">
+         <h1 style="color: white">UNPHU</h1>
+     </div>  
+    <nav class="site-navigation">
+     <div class="margenes-cerrarsesion2">
+         <a class="btn btn-danger" asp-controller="SolicitudCupos" asp-action="CerrarSesion">Salir</a>
+     </div>
+    </nav>
+</header>
+
+<div class="grid">
+<div>
+    <form asp-action="Index" asp-controller="SolicitudCupos" method="post" class="col p-2">
+         <div class="p-1">
+         <input class="form-control p-2 item-2 col-md-4" type="text" placeholder="Buscar por Asignatura..." name="buscarAsignatura" />
+         </div>
+         <div class="p-1">
+            <input type="submit" value="Buscar" class="btn btn-success p-2" />
+            <input type="submit" value="Mostrar Todo" class="btn btn-success p-2" />
+            <button type="button" class="btn btn-danger p-2 item-9" data-bs-toggle="modal" data-bs-target="#exampleModal">Nueva Seccion</button>
+         </div>
+         
+    </form>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Asignatura</th>
+                    <th>Horario</th>
+                    <th>Creditos</th>
+                    <th>Cantidad</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+
+                        @foreach (var item in Model)
+                        {
+                                        <tr>
+                                             <td>@item.Codigo</td>
+                                             <td>@item.Asignatura</td>
+                                             <td>@item.Horario</td>
+                                             <td>@item.Creditos</td>
+                                             <td>@item.Cantidad / 20</td>
+                                             <td><a class="btn btn-success" asp-controller="SolicitudCupos" asp-action="Unirse" asp-route-Id="@item.Id" asp-route-cantidad="@item.Cantidad">Unirse</a></td>
+                                         </tr>
+                        }
+                            
+            </tbody>
+        </table>
+                <nav aria-label="Page navigation example p-3">
+                    <ul class="pagination justify-content-center pagination-lg">
+                         <li class="page-item"><a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex-1)" class="@prevDisabled page-link">Atras</a></li>
+                         <li class="page-item"><a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex+1)" class="@nextDisabled page-link">Siguiente</a></li>
+                    </ul>
+                </nav>
+    </div>
+</div>
+</div>
+
+<!-- Modal -->
+
+ <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Crear nueva seccion</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form asp-controller="SolicitudCupos" asp-action="CrearSesion" method="post">
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Asigantura:</label>
+            <select name="asignatura" class="form-select" id="recipient-name" required>
+            <option selected disabled value="">Elige...</option>
+                                @foreach (Asignatura asignaturas in ViewBag.Asignaturas)
+                                {
+                                  <option>@asignaturas.Asignatura1</option>
+                                }
+            </select>
+          </div>
+                        @*-------------------------------------horario 1*@
+             <label class="col-form-label">Horario:</label>
+             <div class="input-group mb-3">
+             <select name="dia" class="form-select" required>
+                <option selected aria-label="Text input with checkbox" disabled value="">Elige...</option>
+                <option>Lunes</option>
+                <option>Martes</option>
+                <option>Miercoles</option>
+                <option>Jueves</option>
+                <option>Viernes</option>
+                <option>Sabado</option>
+             </select>
+             <span class="input-group-text">De</span>
+             <select name="hora1" class="form-select" required>
+                <option selected disabled value="">Elige...</option>
+                <option>7:00AM</option>
+                <option>8:00AM</option>
+                <option>9:00AM</option>
+                <option>10:00AM</option>
+                <option>11:00AM</option>
+                <option>12:00PM</option>
+                <option>1:00PM</option>
+                <option>2:00PM</option>
+                <option>3:00PM</option>
+                <option>4:00PM</option>
+                <option>5:00PM</option>
+                <option>6:00PM</option>
+                <option>7:00PM</option>
+                <option>8:00PM</option>
+                <option>9:00PM</option>
+                <option>10:00PM</option>
+             </select>
+             <span class="input-group-text">a</span>
+             <select name="hora2" class="form-select" required>
+                <option selected disabled value="">Elige...</option>
+                <option>7:00AM</option>
+                <option>8:00AM</option>
+                <option>9:00AM</option>
+                <option>10:00AM</option>
+                <option>11:00AM</option>
+                <option>12:00PM</option>
+                <option>1:00PM</option>
+                <option>2:00PM</option>
+                <option>3:00PM</option>
+                <option>4:00PM</option>
+                <option>5:00PM</option>
+                <option>6:00PM</option>
+                <option>7:00PM</option>
+                <option>8:00PM</option>
+                <option>9:00PM</option>
+                <option>10:00PM</option>
+             </select>
+          </div>
+                        @*-------------------------------------horario 2*@
+          @*<label class="col-form-label">Dia 2: <h6 style="color:red">3 creditos</h6></label>*@
+          <div class="input-group mb-3">
+             <select name="dia_2" class="form-select" >
+                <option selected disabled value="">Elige...</option>
+                <option>Lunes</option>
+                <option>Martes</option>
+                <option>Miercoles</option>
+                <option>Jueves</option>
+                <option>Viernes</option>
+                <option>Sabado</option>
+             </select>
+             <span class="input-group-text">De</span>
+             <select name="hora1_2" class="form-select">
+                <option selected disabled value="">Elige...</option>
+                <option>7:00AM</option>
+                <option>8:00AM</option>
+                <option>9:00AM</option>
+                <option>10:00AM</option>
+                <option>11:00AM</option>
+                <option>12:00PM</option>
+                <option>1:00PM</option>
+                <option>2:00PM</option>
+                <option>3:00PM</option>
+                <option>4:00PM</option>
+                <option>5:00PM</option>
+                <option>6:00PM</option>
+                <option>7:00PM</option>
+                <option>8:00PM</option>
+                <option>9:00PM</option>
+                <option>10:00PM</option>
+             </select>
+             <span class="input-group-text">a</span>
+             <select name="hora2_2" class="form-select">
+                <option selected disabled value="">Elige...</option>
+                <option>7:00AM</option>
+                <option>8:00AM</option>
+                <option>9:00AM</option>
+                <option>10:00AM</option>
+                <option>11:00AM</option>
+                <option>12:00PM</option>
+                <option>1:00PM</option>
+                <option>2:00PM</option>
+                <option>3:00PM</option>
+                <option>4:00PM</option>
+                <option>5:00PM</option>
+                <option>6:00PM</option>
+                <option>7:00PM</option>
+                <option>8:00PM</option>
+                <option>9:00PM</option>
+                <option>10:00PM</option>
+             </select>
+          </div>
+                        @*-------------------------------------horario 3*@
+          @*<label class="col-form-label">Dia 3: <h6 style="color:red">4 creditos</h6></label>*@
+          <div class="input-group mb-3">
+             <select name="dia3" class="form-select" >
+                <option selected disabled value="">Elige...</option>
+                <option>Lunes</option>
+                <option>Martes</option>
+                <option>Miercoles</option>
+                <option>Jueves</option>
+                <option>Viernes</option>
+                <option>Sabado</option>
+             </select>
+             <span class="input-group-text">De</span>
+             <select name="hora1_3" class="form-select">
+                <option selected disabled value="">Elige...</option>
+                <option>7:00AM</option>
+                <option>8:00AM</option>
+                <option>9:00AM</option>
+                <option>10:00AM</option>
+                <option>11:00AM</option>
+                <option>12:00PM</option>
+                <option>1:00PM</option>
+                <option>2:00PM</option>
+                <option>3:00PM</option>
+                <option>4:00PM</option>
+                <option>5:00PM</option>
+                <option>6:00PM</option>
+                <option>7:00PM</option>
+                <option>8:00PM</option>
+                <option>9:00PM</option>
+                <option>10:00PM</option>
+             </select>
+             <span class="input-group-text">a</span>
+             <select name="hora2_2" class="form-select" >
+                <option selected disabled value="">Elige...</option>
+                <option>7:00AM</option>
+                <option>8:00AM</option>
+                <option>9:00AM</option>
+                <option>10:00AM</option>
+                <option>11:00AM</option>
+                <option>12:00PM</option>
+                <option>1:00PM</option>
+                <option>2:00PM</option>
+                <option>3:00PM</option>
+                <option>4:00PM</option>
+                <option>5:00PM</option>
+                <option>6:00PM</option>
+                <option>7:00PM</option>
+                <option>8:00PM</option>
+                <option>9:00PM</option>
+                <option>10:00PM</option>
+             </select>
+          </div>
+
+          <div class="modal-footer">
+             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+             <button type="submit" class="btn btn-success">Crear</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    @if (TempData["Titulo"] != null)
+    {
+                        <script type="text/javascript">
+                                window.onload = function test() {
+                                Swal.fire({
+                                       icon: '@TempData["Tipo"]',
+                                       title: '@TempData["Titulo"]',
+                                       text: '@TempData["Mensaje"]',
+                                       confirmButtonColor: '#007e00'
+                        });
+                        };
+                        </script>
+    }
+
+
+
+    <script src="~/js/sweetalert2.min.js" asp-append-version="true"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
+
+<footer class="site-footer footer">
+     <div class="site-identity">
+         <p style="color: white; font-size: 12px;">UNPHU © Todos los derechos reservados 2022</p>
+     </div>  
+</footer>
+
+</body>
+
+</html>
+
+
+    

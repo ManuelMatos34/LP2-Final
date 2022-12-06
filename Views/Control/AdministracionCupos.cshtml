@@ -1,0 +1,158 @@
+﻿@model PaginatedList<PosiblesCupo>
+@{
+    ViewData["Title"] = "Index";
+    Layout = null;
+
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Administracion Cupos(UNPHU)</title>
+
+    <meta name="viewport" content="width=device-width" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/sweetalert2.min.css" asp-append-version="true" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+
+<body>
+
+<header class="site-header">
+     <div class="site-identity">
+         <h1 style="color: white">UNPHU</h1>
+     </div>  
+    <nav class="site-navigation">
+     <div class="margenes-cerrarsesion2">
+         <a class="btn btn-danger" asp-controller="Control" asp-action="CerrarSesion">Salir</a>
+     </div>
+    </nav>
+</header>
+
+<div class="grid">
+<div>
+    <h3>Administracion de cupos</h3>
+    <form asp-action="AdministracionCupos" asp-controller="Control" method="post" class="col p-2">
+         <div class="p-1">
+         <input class="form-control p-2 item-2 col-md-4" type="text" placeholder="Buscar por Asignatura..." name="buscarAsignatura" />
+         </div>
+         <div class="p-1">
+            <input type="submit" value="Buscar" class="btn btn-success p-2" />
+            <input type="submit" value="Mostrar Todo" class="btn btn-success p-2" />
+            <a asp-action="GenerarPDF2" asp-controller="Control" class="btn btn-primary p-2">Generar Reporte</a>
+         </div>
+    </form>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Asignatura</th>
+                    <th>Horario</th>
+                    <th>Estatus</th>
+                    <th>Creditos</th>
+                    <th>Cantidad</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+
+                        @foreach (var item in Model)
+                        {
+                                            <tr>
+                                                 <td>@item.Codigo</td>
+                                                 <td>@item.Asignatura</td>
+                                                 <td>@item.Horario</td>
+                                                 <td>@item.Estatus</td>
+                                                 <td>@item.Creditos</td>
+                                                 <td>@item.Cantidad / 20</td>                                               
+                                                 <td><a asp-action="GenerarPDF" asp-controller="Control" asp-route-asignatura="@item.Asignatura" asp-route-codigo="@item.Codigo" asp-route-id="@item.Id" class="btn btn-warning">Reporte</a></td>
+                                                 <td><a asp-action="ActivarDesactivar2" asp-controller="Control" asp-route-id="@item.Id" class="btn btn-primary">Activo/Inactivo</a></td>
+                                                 <td><a class="btn btn-success"asp-action="EnviarCorreoCupos" asp-controller="Control" asp-route-codigo="@item.Codigo" asp-route-mensaje="Su cupo ha sido confirmado">Confirmar</a></td>
+                                                 <td><a class="btn btn-danger" asp-action="EnviarCorreoCupos" asp-controller="Control" asp-route-codigo="@item.Codigo" asp-route-mensaje="Su solicitud de cupo no cumplido con los requerimiento necesario para ser autorizado">Rechazar</a></td>
+                                            </tr>
+                        }
+
+            </tbody>
+        </table>
+
+                <nav aria-label="Page navigation example p-3">
+                    <ul class="pagination justify-content-center">
+                         <li class="page-item"><a asp-action="AdministracionCupos" asp-route-pageNumber="@(Model.PageIndex-1)" class="@prevDisabled page-link">Atras</a></li>
+                         <li class="page-item"><a asp-action="AdministracionCupos" asp-route-pageNumber="@(Model.PageIndex+1)" class="@nextDisabled page-link">Siguiente</a></li>
+                    </ul>
+                </nav>
+    </div>
+</div>
+</div>
+
+<!-- Modal -->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Enviar Correo</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form asp-controller="Control" asp-action="EnviarCorreoCupos" method="post">
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Para:</label>
+            <input name="Para" class="form-control" placeholder="Para:" required/>
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Asunto:</label>
+            <input name="asunto" class="form-control" placeholder="Asunto:" required/>
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Mensaje:</label>
+            <textarea name="mensaje" style="height: 7rem;" class="form-control" id="message-text" placeholder="Mensaje:" required></textarea>
+          </div>
+          <div class="modal-footer">
+             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+             <button type="submit" class="btn btn-success">Enviar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    @if (TempData["Titulo"] != null)
+    {
+                            <script type="text/javascript">
+                                    window.onload = function test() {
+                                    Swal.fire({
+                                           icon: '@TempData["Tipo"]',
+                                           title: '@TempData["Titulo"]',
+                                           text: '@TempData["Mensaje"]',
+                                           confirmButtonColor: '#007e00'
+                            });
+                            };
+                            </script>
+    }
+
+    <script src="~/js/sweetalert2.min.js" asp-append-version="true"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
+
+<footer class="site-footer footer">
+     <div class="site-identity">
+         <p style="color: white; font-size: 12px;">UNPHU © Todos los derechos reservados 2022</p>
+     </div>  
+</footer>
+
+</body>
+
+</html>

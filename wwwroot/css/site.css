@@ -1,0 +1,275 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.login-form {
+    width: 350px;
+    margin: 300px auto;
+    font-size: 15px;
+}
+
+    .login-form form {
+        margin-bottom: 15px;
+        background: #f7f7f7;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+        border-radius: 8px;
+    }
+
+    .login-form h2 {
+        margin: 0 0 15px;
+    }
+
+.form-control, .btn {
+    min-height: 38px;
+}
+
+.btn {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.background-login {
+    background-color: darkgreen;
+}
+
+.background-home {
+    background-color: darkgreen;
+}
+
+.background-admin {
+    background-color: darkslategray;
+}
+.background-admin-page {
+    background-color: darkgray;
+}
+
+.margenes {
+    margin: 0 3% 0 3%;
+    padding-top: 1px;
+}
+
+.colorh2 {
+    color: forestgreen;
+    margin: 2rem 3% 0 3% ;
+}
+
+p {
+    margin: 0 4% 0 4%;
+}
+
+.margenes-input {
+    margin: 0 35% 0 35%;
+    padding-top: 20px;
+}
+
+.margenes-boton {
+    margin: 0 40% 0 40%;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0px;
+
+}
+
+.nota{
+    color: red;
+    font-size: 20px;
+}
+
+.margenes-cerrarsesion {
+    padding-top: 20px;
+}
+
+.margenes-cerrarsesion2 {
+    padding-top: 10px;
+}
+
+.po {
+    margin: 0 4% 0 4%;
+    font-weight: bold;
+    font-size: 40px;
+    color: red;
+    padding-top: 20px;
+}
+
+
+
+
+.margen-nota {
+    color: white;
+}
+
+.margenes-user {
+    padding-top: 11px;
+}
+
+.padding {
+    padding-top: 50px;
+}
+
+
+
+.grid {
+    margin: 50px auto 50px auto;
+    padding: 20px 20px;
+    border: 2px solid #BFBFBF;
+    background-color: white;
+    box-shadow: 1px 1px 19px #aaaaaa;
+    border-collapse: collapse;
+    border-radius: 5px 5px 5px 5px;
+    width: 110rem;
+}
+
+
+.item-1 {
+    margin: 0px 0px 0px 87.1rem;
+}
+
+.item-5 {
+    margin: 0px 0px 0px 58.4rem;
+}
+
+.item-9 {
+    margin: 0px 0px 0px 86.5rem;
+}
+
+.botones-home {
+    margin: 0rem 0px 0px 50rem;
+}
+
+.bthome {
+    margin: 25rem auto 25px auto;
+}
+
+
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.20);
+}
+
+.site-header {
+    border-bottom: 1px solid #ccc;
+    border-bottom-color: darkgreen;
+    padding: 0.1em 1em;
+    display: flex;
+    justify-content: space-between;
+    background-color: darkgreen;
+    box-shadow: 1px 1px 19px #aaaaaa;
+
+}
+
+.site-header-admin {
+    border-bottom: 1px solid #ccc;
+    border-bottom-color: darkslategray;
+    padding: 0.1em 1em;
+    display: flex;
+    justify-content: space-between;
+    background-color: darkslategray;
+    box-shadow: 1px 1px 19px #aaaaaa;
+}
+
+.site-footer {
+    border-top: 1px solid #ccc;
+    border-top-color: darkgreen;
+    padding: 0.1em 1em;
+    display: flex;
+    justify-content: center;
+    background-color: darkgreen;
+    box-shadow: 1px 1px 19px #aaaaaa;
+}
+
+.site-footer-admin {
+    border-top: 1px solid #ccc;
+    border-top-color: darkslategray;
+    padding: 0.1em 1em;
+    display: flex;
+    justify-content: center;
+    background-color: darkslategray;
+    box-shadow: 1px 1px 19px #aaaaaa;
+}
+
+.site-identity h1 p{
+    font-size: 1.5em;
+    margin: 0.6em 0;
+    display: inline-block;
+}
+
+.site-navigation ul,
+.site-navigation li {
+    margin: 0;
+    padding: 0;
+}
+
+.site-navigation li {
+    display: inline-block;
+    margin: 1.4em 1em 1em 1em;
+}
+
+.stylo-barra {
+    border-collapse: collapse;
+}
+
+.btn-back {
+    margin: 20px 0px 0px 20px;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.pagination > li > a {
+    background-color: white;
+    color: green;
+}
+
+    .pagination > li > a:focus,
+    .pagination > li > a:hover,
+    .pagination > li > span:focus,
+    .pagination > li > span:hover {
+        color: green;
+        background-color: #eee;
+        border-color: green;
+    }
+
+.pagination > .active > a {
+    color: white;
+    background-color: green;
+    border: solid 1px green;
+}
+
+    .pagination > .active > a:hover {
+        background-color: green;
+        border: solid 1px green;
+    }
+
+
+
+
+
+

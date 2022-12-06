@@ -1,0 +1,157 @@
+﻿@model PaginatedList<EstudianteNuevosArchivo>
+@{
+    Layout = null;
+
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Administracion Admisiones(UNPHU)</title>
+
+    <meta name="viewport" content="width=device-width" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/sweetalert2.min.css" asp-append-version="true" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+
+<body>
+
+<header class="site-header">
+     <div class="site-identity">
+         <h1 style="color: white">UNPHU</h1>
+     </div>  
+    <nav class="site-navigation">
+     <div class="margenes-cerrarsesion2">
+         <a class="btn btn-danger" asp-controller="Control" asp-action="CerrarSesion">Salir</a>
+     </div>
+    </nav>
+</header>
+
+<div class="grid">
+<div>
+    <h3>Administracion de archivos</h3>
+    <form asp-action="AdministracionNuevoIngreso" asp-controller="Control" method="post" class="col p-2">
+         <div class="p-1 input-group">
+             <span class="input-group-text">Filtrar Por Correo:</span>
+             <input class="form-control p-2 item-2 col-md-4" type="text" placeholder="Buscar por correo..." name="buscarCorreo" />
+             <span class="input-group-text">Filtrar Por fecha:</span>
+             <input type="date" class="form-control" name="buscarDesde">
+             <input type="date" class="form-control" name="buscarHasta">
+         </div>
+         <div class="p-1">
+            <input type="submit" value="Buscar" class="btn btn-success p-2" />
+            <input type="submit" value="Mostrar Todo" class="btn btn-success p-2" />
+            @*<button type="button" class="btn btn-danger p-2 item-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Enviar Correo</button>*@
+         </div>
+    </form>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tipo Archivo</th>
+                    <th>Fecha</th>
+                    <th>Correo estudiante</th>
+                    <th>Estatus</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+
+                @foreach (var item in Model)
+                {
+                            <tr>
+                               <td>@item.Tipo</td>
+                               <td>@item.FechaCreacion</td>
+                               <td>@item.EmailEstudiante</td>
+                               <td>@item.Estatus</td>
+                               <td><a class="btn btn-success" asp-controller="Control" asp-action="DescargarArchivo" asp-route-Id="@item.Id">Descargar</a></td>
+                               <td><a class="btn btn-warning" asp-controller="Control" asp-action="ActivarDesactivar" asp-route-Id="@item.Id" asp-route-email="@item.EmailEstudiante">Activo/Inactivo</a></td>
+                               <td><a class="btn btn-primary">Enviar Correo</a></td>
+                            </tr>                       
+                }
+
+            </tbody>
+        </table>
+
+                <nav aria-label="Page navigation example p-3">
+                    <ul class="pagination justify-content-center">
+                         <li class="page-item"><a asp-action="AdministracionNuevoIngreso" asp-route-pageNumber="@(Model.PageIndex-1)" class="@prevDisabled page-link">Atras</a></li>
+                         <li class="page-item"><a asp-action="AdministracionNuevoIngreso" asp-route-pageNumber="@(Model.PageIndex+1)" class="@nextDisabled page-link">Siguiente</a></li>
+                    </ul>
+                </nav>
+    </div>
+</div>
+</div>
+
+<!-- Modal -->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Enviar Correo</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form asp-controller="Control" asp-action="EnviarCorreoAdmisiones" method="post">
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Para:</label>
+            <input name="Para" class="form-control" placeholder="Para:" required/>
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Asunto:</label>
+            <input name="asunto" class="form-control" placeholder="Asunto:" required/>
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Mensaje:</label>
+            <textarea name="mensaje" style="height: 7rem;" class="form-control" id="message-text" placeholder="Mensaje:" required></textarea>
+          </div>
+          <div class="modal-footer">
+             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+             <button type="submit" class="btn btn-success">Enviar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer footer">
+     <div class="site-identity">
+         <p class="p-1" style="color: white; font-size: 12px;">Para cualquier duda o consulta adicional, contáctenos al (809) 763-0422 (WhatsApp), (809) 540-0422 (directo) o al 
+    correo electrónico info@unphu.edu.do</p>
+     </div>  
+</footer>
+
+    @if (TempData["Titulo"] != null)
+    {
+                            <script type="text/javascript">
+                                    window.onload = function test() {
+                                    Swal.fire({
+                                           icon: '@TempData["Tipo"]',
+                                           title: '@TempData["Titulo"]',
+                                           text: '@TempData["Mensaje"]',
+                                           confirmButtonColor: '#007e00'
+                            });
+                            };
+                            </script>
+    }
+
+    <script src="~/js/sweetalert2.min.js" asp-append-version="true"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

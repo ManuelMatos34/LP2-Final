@@ -1,0 +1,145 @@
+﻿@using Microsoft.AspNetCore.Identity;
+
+@{
+    ViewData["Title"] = "Estudiantes";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+      <title>Admisiones (UNPHU)</title>
+
+      <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+      <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+      <link rel="stylesheet" href="~/css/sweetalert2.min.css" asp-append-version="true" />
+
+</head>
+
+<body>
+
+<header class="site-header">
+     <div class="site-identity">
+         <h1 style="color: white">UNPHU</h1>
+     </div>  
+    <nav class="site-navigation">
+     <div class="margenes-cerrarsesion2">
+         <a class="btn btn-danger" asp-controller="Login" asp-action="CerrarSesion">Salir</a>
+     </div>
+    </nav>
+</header>
+
+
+    @if (User.IsInRole("Nacional"))
+    {
+                <h2 class="colorh2">Requisitos para estudiantes nacionales proveniente de estudios de secundaria</h2>
+                <hr />
+                <p><strong>Requisitos:</strong></p>
+                <br />
+                <p>- Acta de nacimiento legalizada.</p>
+                <p>- Récord de notas original de los últimos cuatro años cursados en la escuela de procedencia.</p>
+                <p>- Certificado de bachiller.</p>
+                <p>- Tres (3) fotografías 2×2.</p>
+                <p>- Fotocopia de cédula de identificación personal y/o pasaporte.</p>
+                <p>- Certificado médico.</p>
+                <p>- Copia de récord de vacunas para estudiantes de Medicina.</p>
+                <p>- Certificado oftalmológico para estudiantes de odontología.</p>
+                <p>- Copia de seguro médico.</p>
+    }
+
+
+    @if (User.IsInRole("Extranjero"))
+    { 
+                <h2 class="colorh2">Requisitos para estudiantes extranjeros</h2>
+                <hr />
+                <p><strong>Requisitos:</strong></p>
+                <br />
+                <p>- Acta de nacimiento apostillada y con traducción al español legalizada en caso de estar en otro idioma.</p>
+                <p>- Récord de notas de los últimos cinco años de estudios secundarios (high school) apostillado y con traducción al español legalizada 
+                    en caso de estar en otro idioma.</p>
+                <p>- Copia del diploma de estudios secundarios apostillado y con traducción al español legalizada en caso de estar en otro idioma.</p>
+                <p>- Copia del pasaporte.</p>
+                <p>- Certificado médico.</p>
+                <p>- Certificado de vacunas (sólo estudiantes de medicina).</p>
+                <p>- Tres (3) fotos 2×2.</p>
+                <p>- Visa de estudiante (Emitida en consulado dominicano de país de residencia).</p>
+                <p>- Seguro de Salud con cobertura en República Dominicana (puede tramitarse a través del Departamento de Relaciones Internacionales).</p>
+                <p>- Estudiantes de Odontología deberán presentar un examen de la vista.</p>
+                <br />
+                <p><strong>Si el estudiante ha realizado estudios universitarios previamente y desea convalidar materias, deberá presentar además:</strong></p>
+                <br />
+                <p>- Dos (2) récords de notas de la universidad de origen, apostillados y traducidos al español en caso de estar en otro idioma. Los documentos 
+                    deben ser legalizados por el Ministerio de Educación Superior Ciencia y Tecnología (MESCYT) en República Dominicana.</p>
+                <p>- Programa de asignaturas (Syllabus) cursadas en la Universidad de procedencia.</p>
+                <p>- En caso de que el estudiante se haya graduado de otra universidad, deberá presentar la copia del Diploma apostillado, traducido al español 
+                    y legalizado por el Ministerio de Educación Superior Ciencia y Tecnología (MESCYT) en República Dominicana.</p>
+                <p>- Dos (2) Cartas de recomendación.</p>
+
+    }
+
+    @if (User.IsInRole("Transferido"))
+    {
+                <h2 class="colorh2">Requisitos para estudiantes provenientes de otra universidad (Transferidos)</h2>
+                <hr />
+                <p><strong>Requisitos:</strong></p>
+                <br />
+                <p>- Acta de nacimiento legalizada.</p>
+                <p>- Copia de cédula de identidad y electoral.</p>
+                <p>- Record de notas del bachillerato.</p>
+                <p>- Índice mínimo acumulado de 2.8 para Ingeniería Civil; 2.5 para Medicina y Odontologia y 2.2 para el resto de las carreras.</p>
+                <p>- Tener un mínimo de 15 créditos que se puedan convalidar que sean compatibles con los programas de la UNPHU.</p>
+                <p>- Dos (2) cartas de recomendación.</p>
+                <p>- Copia de récord de vacunas para estudiantes de Medicina.</p>
+                <p>- Certificado oftalmológico para estudiantes de odontología.</p>
+                <p>- Copia de seguro médico.</p>
+                <p>- Certificado de bachiller.</p>
+                <p>- Tres (3) fotografías 2×2.</p>
+                <p>- Certificado médico.</p>
+                <p>- Dos (2) transcripciones oficiales (record de notas) de la universidad de procedencia.</p>
+                <p>- Copias de los programas de estudios, debidamente sellados por la universidad de procedencia.</p>
+    }
+
+<br />
+
+<hr />
+
+    @if (ViewBag.Message != null)
+    {
+            <script type="text/javascript">
+                window.onload = function () {
+                       Swal.fire('@ViewBag.Tittle','@ViewBag.Message','@ViewBag.Type');
+                };
+            </script>
+    }
+
+<div class="margenes-input ">
+    <div class="mb-7">
+        <form method="post" enctype="multipart/form-data" asp-controller="AdmisionNuevosEstudiantes" asp-action="Index">
+            <div class="form-group">
+                <div class="mb-3">
+                    <input class="form-control" name="archivos" type="file" accept=".zip, .rar, .png, .jpg, .pdf, .docx"  />
+                    <br />
+                    <input class="btn btn-success margenes-boton" type="submit" value="Guardar"/>
+                </div>
+            </div>       
+        </form>
+    </div>
+</div> 
+
+
+<footer class="site-footer footer">
+     <div class="site-identity">
+         <p class="p-1" style="color: white; font-size: 12px;">Para cualquier duda o consulta adicional, contáctenos al (809) 763-0422 (WhatsApp), (809) 540-0422 (directo) o al 
+    correo electrónico info@unphu.edu.do</p>
+     </div>  
+</footer>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/sweetalert2.min.js" asp-append-version="true"></script>
+
+</body>
+
+</html>
