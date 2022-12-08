@@ -1,14 +1,14 @@
 ﻿@model List<PosiblesCupo>
 @{
-    Layout = null;
+	Layout = null;
 	var reloj = DateTime.Now.ToString("dd MMMM yyyy");
 }
 
 
 
 <DOCTYPE html>
-	
-    <table style="width:100%">
+
+	<table style="width:100%">
 	<tbody>
 		<tr>
 			<td style="width:20%"><img alt="logo-unphu - Master en investigación clínica" src="http://www.ub.edu/mastermrcmaimce/wp-content/uploads/2017/01/logo-unphu.png" /></td>
@@ -67,7 +67,7 @@
 				<thead>
 					<tr>
 						<th class="tbth">Codigo</th>
-					    <th class="tbth" style="width:130px">Asignatura</th>
+						<th class="tbth" style="width:130px">Asignatura</th>
 						<th class="tbth" style="width:130px">Horario</th>
 						<th class="tbth" style="width:130px">Cantidad</th>
 					</tr>
@@ -75,20 +75,20 @@
 
 
 				<tbody>
-					 @{
-										
-					 foreach(PosiblesCupo item in Model)
-                    {
-                        <tr>
-							<td class="td-item"><p class="item">@item.Codigo</p></td>
-                            <td class="td-item"><p class="item">@item.Asignatura</p></td>
-							<td class="td-item"><p class="item">@item.Horario</p></td>
-							<td style="background-color:#EDF6F9"><p class="item">@item.Cantidad</p></td>
-                            
-                       </tr>
-                    }
-					
-                }
+							@{
+
+								foreach (PosiblesCupo item in Model)
+								{
+								<tr>
+									<td class="td-item"><p class="item">@item.Codigo</p></td>
+									<td class="td-item"><p class="item">@item.Asignatura</p></td>
+									<td class="td-item"><p class="item">@item.Horario</p></td>
+									<td style="background-color:#EDF6F9"><p class="item">@item.Cantidad</p></td>
+
+							   </tr>
+								}
+
+							}
 				</tbody>
 
 			</table>
@@ -97,5 +97,5 @@
 	</tbody>
 </table>
 
-	
+
 </DOCTYPE>

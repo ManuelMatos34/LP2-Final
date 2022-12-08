@@ -24,7 +24,6 @@ namespace ProyectoSC_AE.Models
         public virtual DbSet<PosiblesCupo> PosiblesCupos { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Asignatura>(entity =>
@@ -39,6 +38,14 @@ namespace ProyectoSC_AE.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.Creditos)
+                    .HasMaxLength(2)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.HorasPracticas)
+                    .HasMaxLength(2)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.HorasTeoricas)
                     .HasMaxLength(2)
                     .IsUnicode(false);
 
@@ -98,6 +105,10 @@ namespace ProyectoSC_AE.Models
                 entity.Property(e => e.IdEstudiante).HasColumnName("Id_Estudiante");
 
                 entity.Property(e => e.IdPosiblesCupos).HasColumnName("Id_PosiblesCupos");
+
+                entity.Property(e => e.Mensaje)
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.IdEstudianteNavigation)
                     .WithMany(p => p.EstudiantesSecciones)

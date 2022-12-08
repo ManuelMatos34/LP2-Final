@@ -5,8 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using ProyectoSC_AE.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Authorization;
-
-
+using System.Data;
 
 namespace ProyectoSC_AE.Controllers
 {
@@ -47,18 +46,33 @@ namespace ProyectoSC_AE.Controllers
             {
                 if (cantidad != 20)
                 {
-                    var materiax = new SqlParameter("@materia", id);
-                    var matriculax = new SqlParameter("@matricula", User.Identity.Name);
+                    SqlConnection con = new SqlConnection("Data Source=DESKTOP-G4NOF27\\SQLEXPRESS;" +
+                        "Initial Catalog=Admision-Cupos;Integrated Security=True");
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand("STPUnirse", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@matricula", User.Identity.Name);
+                    cmd.Parameters.AddWithValue("@materia", id);
+                    cmd.Parameters.Add("@ERROR", SqlDbType.VarChar, 500);
+                    cmd.Parameters["@ERROR"].Direction = ParameterDirection.Output;
+                    cmd.ExecuteNonQuery();
+                    var message = (string)cmd.Parameters["@ERROR"].Value;
+                    con.Close();
 
-                    // storeprocedure para unir un estudiante a una session
-                    _DBcontext.EstudiantesSecciones.FromSqlRaw("STPUnirse @matricula, @materia", matriculax, materiax).ToList();
-                    await _DBcontext.SaveChangesAsync();
+                    if (message == "E")
+                    {
+                        TempData["Titulo"] = "Ha ocurrido un error";
+                        TempData["Mensaje"] = "Ya estas en esta seccion";
+                        TempData["Tipo"] = "error";
 
-
-                        // mensaje correcto
+                    }
+                    else
+                    {
                         TempData["Titulo"] = "Confirmacion";
-                        TempData["Mensaje"] = "Tu cupo esta siendo procesado";
+                        TempData["Mensaje"] = "Te has unido correctamente";
                         TempData["Tipo"] = "success";
+                    }
+
 
                     return RedirectToAction("Index", "SolicitudCupos");
                 }

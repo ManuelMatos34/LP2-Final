@@ -7,7 +7,7 @@ using ProyectoSC_AE.Models;
 using System.Net.Mail;
 using Microsoft.AspNetCore.Authorization;
 using Rotativa.AspNetCore;
-using iText.Kernel.Pdf;
+
 
 namespace ProyectoSC_AE.Controllers
 {
@@ -145,7 +145,9 @@ namespace ProyectoSC_AE.Controllers
         {
             var reloj = DateTime.Now.ToString("dddd, dd MMMM yyyy");
             var nombrecompleto = codigo + "-" + asignatura + "-" + reloj;
-            List<Usuario> modelo = _DBcontext.Usuarios.FromSqlRaw("Select distinct a.* from Usuarios a, Estudiantes_Secciones b, PosiblesCupos c where b.Id_Estudiante = a.Id and b.Id_PosiblesCupos = c.Id and b.Id_PosiblesCupos ='" + id + "'").ToList();
+            List<Usuario> modelo = _DBcontext.Usuarios.FromSqlRaw("Select distinct a.* from Usuarios " +
+                "a, Estudiantes_Secciones b, PosiblesCupos c where b.Id_Estudiante = a.Id and " +
+                "b.Id_PosiblesCupos = c.Id and b.Id_PosiblesCupos ='" + id + "'").ToList();
 
             return new ViewAsPdf("GenerarPDF", modelo)
             {
@@ -153,9 +155,7 @@ namespace ProyectoSC_AE.Controllers
                 FileName = $"" + nombrecompleto + ".pdf",
                 PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
                 PageSize = Rotativa.AspNetCore.Options.Size.A4
-
             };
-
         }
 
         // pdf de todos los cupos solicitados
@@ -165,19 +165,29 @@ namespace ProyectoSC_AE.Controllers
             //TODO ESTO LO REEMPLAZAS CON TU PROPIA LÓGICA HACIA TU BASE DE DATOS
             List<PosiblesCupo> modelo = _DBcontext.PosiblesCupos.FromSqlRaw("Select * from PosiblesCupos").ToList();
 
-            PdfWriter pdfwriter = new PdfWriter(@"D:\C#\ProyectoSC-AE\Reportes\" + "CUPOS SOLICITADOS" + "-" + reloj + ".pdf");
-
             return new ViewAsPdf("GenerarPDF2", modelo)
             {
 
                 FileName = $"CUPOS SOLICITADOS" + "-" + reloj + ".pdf",
                 PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
                 PageSize = Rotativa.AspNetCore.Options.Size.A4
-
             };
-
         }
 
+        public async Task<IActionResult> GenerarPDF3()
+        {
+            var reloj = DateTime.Now.ToString("dddd, dd MMMM yyyy");
+            //TODO ESTO LO REEMPLAZAS CON TU PROPIA LÓGICA HACIA TU BASE DE DATOS
+            List<EstudianteNuevosArchivo> modelo = _DBcontext.EstudianteNuevosArchivos.FromSqlRaw("Select * from EstudianteNuevosArchivos").ToList();
+
+            return new ViewAsPdf("GenerarPDF3", modelo)
+            {
+
+                FileName = $"ARCHIVOS ESTUDIANTES" + "-" + reloj + ".pdf",
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
+                PageSize = Rotativa.AspNetCore.Options.Size.A4
+            };
+        }
         // cerrar seccion
         public async Task<ActionResult> CerrarSesion()
         {

@@ -45,7 +45,10 @@ body {
 }
 
 .background-login {
-    background-color: darkgreen;
+    background-image: url("../images/background_unphu-virtual-optimized.jpg");
+    background-repeat: no-repeat;
+    overflow: hidden;
+    background-size: cover;
 }
 
 .background-home {
@@ -141,7 +144,7 @@ p {
 
 
 .item-1 {
-    margin: 0px 0px 0px 87.1rem;
+    margin: 0px 0px 0px 78.4rem;
 }
 
 .item-5 {

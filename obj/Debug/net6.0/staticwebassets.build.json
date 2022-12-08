@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "2Ei/9ijhtBefbtth/NelJLd6hii7cWbSe3RsI3P6Yl4=",
+  "Hash": "U+9EPp/hJacPhhkwGCbd+1N7GmL1tONzAn6uyDGzzTg=",
   "Source": "ProyectoSC-AE",
   "BasePath": "_content/ProyectoSC-AE",
   "Mode": "Default",
@@ -442,6 +442,23 @@
       "OriginalItemSpec": "wwwroot\\images\\about.jpg"
     },
     {
+      "Identity": "D:\\C#\\ProyectoSC-AE\\wwwroot\\images\\background_unphu-virtual-optimized.jpg",
+      "SourceId": "ProyectoSC-AE",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\C#\\ProyectoSC-AE\\wwwroot\\",
+      "BasePath": "_content/ProyectoSC-AE",
+      "RelativePath": "images/background_unphu-virtual-optimized.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\background_unphu-virtual-optimized.jpg"
+    },
+    {
       "Identity": "D:\\C#\\ProyectoSC-AE\\wwwroot\\images\\banner2.jpg",
       "SourceId": "ProyectoSC-AE",
       "SourceType": "Discovered",
@@ -746,6 +763,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\top_arrow2.png"
+    },
+    {
+      "Identity": "D:\\C#\\ProyectoSC-AE\\wwwroot\\images\\universidad-nacional-pedro-henriquez-urena-1.webp",
+      "SourceId": "ProyectoSC-AE",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\C#\\ProyectoSC-AE\\wwwroot\\",
+      "BasePath": "_content/ProyectoSC-AE",
+      "RelativePath": "images/universidad-nacional-pedro-henriquez-urena-1.webp",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\universidad-nacional-pedro-henriquez-urena-1.webp"
     },
     {
       "Identity": "D:\\C#\\ProyectoSC-AE\\wwwroot\\images\\UNPHU-LOGO.png",

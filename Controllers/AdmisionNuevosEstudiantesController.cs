@@ -32,6 +32,7 @@ namespace ProyectoSC_AE.Controllers
                     var fileName = Path.GetFileName(archivos.FileName); // aqui se obtiene el nombre del archivo
                     var fileExtension = Path.GetExtension(fileName); // aqui se obtienen la extension del archivo
                     var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
+
                     var objArchivos = new EstudianteNuevosArchivo()
                     {
                         Id = 0,
@@ -55,6 +56,13 @@ namespace ProyectoSC_AE.Controllers
                     ViewBag.Message = "Sus archivos se han guardado correctamente en la plataforma!";
                     ViewBag.Type = "success";
                 }
+                else
+                {   // mensaje de error
+                    ViewBag.Tittle = "Ha ocurrido un error!!";
+                    ViewBag.Message = "No hay archivo, Intentelo de nuevo";
+                    ViewBag.Type = "error";
+                }
+                return View();
             }
             else
             {   // mensaje de error
