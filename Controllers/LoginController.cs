@@ -118,38 +118,43 @@ namespace ProyectoSC_AE.Controllers
 
             if (usuario != null)
             {
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, _usuario.Matricula)
-                };
 
-                string[] usuariorol = { usuario.Tipo };
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, _usuario.Matricula)
+                    };
 
-                foreach (string rol in usuariorol)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, rol));
-                }
+                    string[] usuariorol = { usuario.Tipo };
 
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    foreach (string rol in usuariorol)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, rol));
+                    }
 
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                    // condiciones dependiendo el rol del usuario ingresado
+                    if (usuario.Tipo == "Profesor")
+                    {
+                        TempData["Titulo"] = "Ha ocurrido un error!!";
+                        TempData["Mensaje"] = "No puedes entrar aqui";
+                        TempData["Tipo"] = "error";
 
-                // condiciones dependiendo el rol del usuario ingresado
-                if (usuario.Tipo == "Profesor")
-                {
+                        return RedirectToAction("InicioSesionCupos", "Login");
+                    }
+                    else if (usuario.Tipo == "Administrador")
+                    {
+                        TempData["Titulo"] = "Ha ocurrido un error!!";
+                        TempData["Mensaje"] = "No puedes entrar aqui";
+                        TempData["Tipo"] = "error";
 
-                    return RedirectToAction("AdministracionCupos", "Control");
-                }
-                else if(usuario.Tipo == "Administrador")
-                {
+                        return RedirectToAction("InicioSesionCupos", "Login");
+                    }
+                    else if (usuario.Tipo == "Estudiante")
+                    {
+                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-                    return RedirectToAction("AdministracionNuevoIngreso", "Control");
-                }
-                else if (usuario.Tipo == "Estudiante")
-                {
-
-                    return RedirectToAction("Index", "SolicitudCupos");
-                }
+                        return RedirectToAction("Index", "SolicitudCupos");
+                    }
 
                 // mensaje de error
                 TempData["Titulo"] = "Ha ocurrido un error!!";
@@ -166,6 +171,68 @@ namespace ProyectoSC_AE.Controllers
                 TempData["Tipo"] = "error";
 
                 return RedirectToAction("InicioSesionCupos", "Login");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ValidarInicioUsuarioAdministrador(Usuario _usuario)
+        {
+            var usuario = ValidarUsuario(_usuario.Matricula, _usuario.Password);
+
+            if (usuario != null)
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, _usuario.Matricula)
+                };
+
+                string[] usuariorol = { usuario.Tipo };
+
+                foreach (string rol in usuariorol)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, rol));
+                }
+
+
+                // condiciones dependiendo el rol del usuario ingresado
+                if (usuario.Tipo == "Profesor")
+                {
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+                    return RedirectToAction("AdministracionCupos", "Control");
+                }
+                else if (usuario.Tipo == "Administrador")
+                {
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+                    return RedirectToAction("AdministracionNuevoIngreso", "Control");
+                }
+                else if (usuario.Tipo == "Estudiante")
+                {
+                    TempData["Titulo"] = "Ha ocurrido un error!!";
+                    TempData["Mensaje"] = "No puedes entrar aqui!!";
+                    TempData["Tipo"] = "error";
+
+                    return RedirectToAction("InicioAdministracion", "Login");
+                }
+
+                // mensaje de error
+                TempData["Titulo"] = "Ha ocurrido un error!!";
+                TempData["Mensaje"] = "Asegurese de haber introducido los datos correctos!!";
+                TempData["Tipo"] = "error";
+
+                return RedirectToAction("InicioAdministracion", "Login");
+            }
+            else
+            {
+                // mensaje de error
+                TempData["Titulo"] = "Ha ocurrido un error!!";
+                TempData["Mensaje"] = "Asegurese de haber introducido los datos correctos!!";
+                TempData["Tipo"] = "error";
+
+                return RedirectToAction("InicioAdministracion", "Login");
             }
         }
 

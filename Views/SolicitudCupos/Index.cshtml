@@ -80,7 +80,7 @@
             </tbody>
         </table>
                 <nav aria-label="Page navigation example p-3">
-                    <ul class="pagination justify-content-center pagination-lg">
+                    <ul class="pagination justify-content-center">
                          <li class="page-item"><a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex-1)" class="@prevDisabled page-link">Atras</a></li>
                          <li class="page-item"><a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex+1)" class="@nextDisabled page-link">Siguiente</a></li>
                     </ul>

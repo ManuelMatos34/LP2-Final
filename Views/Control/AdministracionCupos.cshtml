@@ -77,6 +77,17 @@
                                                  <td><a asp-action="ActivarDesactivar2" asp-controller="Control" asp-route-id="@item.Id" class="btn btn-primary">Activo/Inactivo</a></td>
                                                  <td><a class="btn btn-success"asp-action="EnviarCorreoCupos" asp-controller="Control" asp-route-codigo="@item.Codigo" asp-route-mensaje="Su cupo ha sido confirmado">Confirmar</a></td>
                                                  <td><a class="btn btn-danger" asp-action="EnviarCorreoCupos" asp-controller="Control" asp-route-codigo="@item.Codigo" asp-route-mensaje="Su solicitud de cupo no cumplido con los requerimiento necesario para ser autorizado">Rechazar</a></td>
+                                                 <form asp-action="AdministracionCupos" asp-controller="Control" asp-route="@item." method="post">
+                                                 <td> <select class="form-select" name="profe">
+                                                         <option selected disabled value="">Profesor...</option> 
+                                                            @foreach (Profesore profesores in ViewBag.Profesores)
+                                                            {
+                                                                <option>@profesores.Nombre</option>
+                                                            }
+                                                      </select>
+                                                 </td>
+                                                 <td><input type="submit" value="Confirmar" class="btn btn-secondary" /></td>
+                                                 </form>
                                             </tr>
                         }
 

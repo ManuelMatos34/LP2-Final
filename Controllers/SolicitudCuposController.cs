@@ -6,6 +6,7 @@ using ProyectoSC_AE.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using System.Net.Mail;
 
 namespace ProyectoSC_AE.Controllers
 {
@@ -102,13 +103,41 @@ namespace ProyectoSC_AE.Controllers
             var horario = dia + " " + hora1 + " " + hora2 + " " + dia_2 + " " + hora1_2 + " " + hora2_2 + " " + dia_3 + " " + hora1_3 + " " + hora2_3;
 
             try {
-                var asignaturax = new SqlParameter("@varAsignatura", asignatura); // parametro
-                var horariox = new SqlParameter("@varHorario", horario); // parametro
-                var matriculax = new SqlParameter("@matricula", User.Identity.Name); // parametro
 
-                // storeprocedure que crear la session
-                _DBcontext.PosiblesCupos.FromSqlRaw("STPcrearsesion @varAsignatura, @varHorario, @matricula", asignaturax, horariox, matriculax).ToList();
-                await _DBcontext.SaveChangesAsync();
+                SqlConnection con = new SqlConnection("Data Source=DESKTOP-G4NOF27\\SQLEXPRESS;" +
+                "Initial Catalog=Admision-Cupos;Integrated Security=True");
+                con.Open();
+                SqlCommand cmd = new SqlCommand("STPcrearsesion", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@varAsignatura", asignatura);
+                cmd.Parameters.AddWithValue("@varHorario", horario);
+                cmd.Parameters.AddWithValue("@matricula", User.Identity.Name);
+                cmd.Parameters.Add("@ERROR", SqlDbType.VarChar, 500);
+                cmd.Parameters["@ERROR"].Direction = ParameterDirection.Output;
+                cmd.ExecuteNonQuery();
+                var message = (string)cmd.Parameters["@ERROR"].Value;
+                con.Close();
+
+                var datos = _DBcontext.Profesores.FromSqlRaw("Select a.* From Profesores a, Asignaturas b where a.Asignatura = b.Id and b.Asignatura = '" + asignatura+"'").ToList();
+
+                var mensaje = "Buenas Maestro/a estaria dispuesto de dar la asigantura " + message + " " + asignatura + " en el horaio " + horario + " en caso de confirmar responda este mismo mensaje, si no ignorelo, se mantendra informado por este medio";
+
+                MailMessage mail = new MailMessage();
+
+                foreach (Profesore destinos in datos)
+                {
+                    mail.To.Add(new MailAddress(destinos.Email, ""));
+                }
+                mail.From = new MailAddress("cuposUNPHU@hotmail.com");
+                mail.Subject = "Estado de la solicidud de cupo";
+                mail.Body = mensaje;
+                mail.IsBodyHtml = true;
+                SmtpClient smtp = new SmtpClient("smtp.office365.com", 587);
+                smtp.UseDefaultCredentials = false;
+                smtp.EnableSsl = true;
+                smtp.Credentials = new System.Net.NetworkCredential("cuposUNPHU@hotmail.com", "1234HOLA");
+                smtp.Send(mail);
+
                 // mensaje correcto
                 TempData["Titulo"] = "Confirmacion";
                 TempData["Mensaje"] = "La sesion se ha creado correctamente";

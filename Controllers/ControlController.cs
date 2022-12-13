@@ -23,6 +23,9 @@ namespace ProyectoSC_AE.Controllers
         [Authorize(Roles = "Profesor")] // solo pueden entrar los usuarios con este rol
         public IActionResult AdministracionCupos(string buscarAsignatura, int? pageNumber)
         {
+            List<Profesore> datos = _DBcontext.Profesores.FromSqlRaw("SELECT * FROM Profesores").ToList();
+            this.ViewBag.Profesores = datos;
+
             int pageSize = 8;
 
             if (buscarAsignatura != null)

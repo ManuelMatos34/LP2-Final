@@ -22,7 +22,9 @@ namespace ProyectoSC_AE.Models
         public virtual DbSet<EstudiantesSeccione> EstudiantesSecciones { get; set; } = null!;
         public virtual DbSet<Pensum> Pensums { get; set; } = null!;
         public virtual DbSet<PosiblesCupo> PosiblesCupos { get; set; } = null!;
+        public virtual DbSet<Profesore> Profesores { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -106,6 +108,8 @@ namespace ProyectoSC_AE.Models
 
                 entity.Property(e => e.IdPosiblesCupos).HasColumnName("Id_PosiblesCupos");
 
+                entity.Property(e => e.IdProfesor).HasColumnName("Id_Profesor");
+
                 entity.Property(e => e.Mensaje)
                     .HasMaxLength(150)
                     .IsUnicode(false);
@@ -121,6 +125,11 @@ namespace ProyectoSC_AE.Models
                     .HasForeignKey(d => d.IdPosiblesCupos)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Estudiantes_Secciones_PosiblesCupos");
+
+                entity.HasOne(d => d.IdProfesorNavigation)
+                    .WithMany(p => p.EstudiantesSecciones)
+                    .HasForeignKey(d => d.IdProfesor)
+                    .HasConstraintName("FK_Estudiantes_Secciones_Profesores");
             });
 
             modelBuilder.Entity<Pensum>(entity =>
@@ -160,6 +169,22 @@ namespace ProyectoSC_AE.Models
                 entity.Property(e => e.Horario)
                     .HasMaxLength(255)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Profesore>(entity =>
+            {
+                entity.Property(e => e.Email)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Nombre)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.AsignaturaNavigation)
+                    .WithMany(p => p.Profesores)
+                    .HasForeignKey(d => d.Asignatura)
+                    .HasConstraintName("FK_Profesores_Asignaturas");
             });
 
             modelBuilder.Entity<Usuario>(entity =>
